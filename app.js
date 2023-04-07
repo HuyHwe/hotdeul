@@ -9,7 +9,11 @@ dotenv.config();
 // configuration process
 const app = express();
 const PORT = process.env.PORT || 5678;
+
+//load static file
 app.use("/assets", express.static(__dirname + '/assets'));
+accountRounter.use("/assets", express.static(__dirname + '/assets'));
+
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
@@ -18,6 +22,8 @@ app.set('view engine', 'ejs');
 app.get("/", (req, res, next) => {
     res.render("index");
 });
+
+
 
 app.use("/products", productsRouter);
 
