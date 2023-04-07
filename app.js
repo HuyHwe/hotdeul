@@ -8,10 +8,10 @@ dotenv.config();
 
 // configuration process
 const app = express();
-const PORT = process.env.PORT || 5432;
+const PORT = process.env.PORT || 5678;
+app.use("/assets", express.static(__dirname + '/assets'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
-app.use("/", express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 // routing logic
 
