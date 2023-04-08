@@ -7,11 +7,14 @@ function initializePassport(passport) {
         usernameField: "email",
         passwordField: "password"
     },
-        async function(username, password, done) {
-            console.log(username, password);
-            
-            if (e) {
-                return done(e);
+        async function(email, password, done) {
+            let user = false;
+            try {
+                user = await users.findOne({where: {email}});
+            } catch (e) {
+                if (e) {
+                    return done(e);
+                }
             }
     
             if (!user) {
@@ -26,9 +29,9 @@ function initializePassport(passport) {
         }
     ));
     
-    passport.serializeUser((user, done) => {
+    passport.serializeUser(function(user, done) {
         done(null, user.id);
-    })
+      });
     
     passport.deserializeUser(async (id, done) => {
         const user = await users.findOne({where: {id:id}});

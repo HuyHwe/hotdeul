@@ -80,11 +80,16 @@
                 <form action="/account/login" method="POST" class="mbr-form form-with-styler mx-auto" data-form-title="Form Name">
                     <div class="row">
                         <% if (typeof data !== "undefined") { %>
+                            <% if (data.success) { %>
                             <div data-form-alert="" class="alert alert-success col-12">Tạo tài khoản thành công!</div>
-                        <% } %>
-                        <div hidden="hidden" data-form-alert-danger="" class="alert alert-danger col-12">
-                            Oops...! some problem!
-                        </div>
+                            <% } %>
+                            <% if (data.wrongCredential) { %>
+                                <div data-form-alert-danger="" class="alert alert-danger col-12">
+                                    Email hoặc mật khẩu không chính xác!
+                                </div>
+                            <% } %>
+                        <% } %> 
+                        
                     </div>
                     <div class="dragArea row">
                         <div class="col-lg-12 col-md-12 col-sm-12 form-group mb-3" data-for="email">

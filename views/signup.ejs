@@ -79,10 +79,14 @@
             <div class="col-lg-8 mx-auto mbr-form" data-form-type="formoid">
                 <form action="/account/signup" method="POST" class="mbr-form form-with-styler mx-auto" data-form-title="Form Name"><input type="hidden" name="email" data-form-email="true" value="AtL59nd173JlwOOWzpIdQxywfkKZ730qX4CzWHh3fDore9J6o6ax//XQbeHfW73+Zt+uh2oZM/L3WmouNxYZ1bHWqnHL1R5hPmfoRXE0SSvjXM9U03WpAxQaGqn2g/uN">
                     <div class="row">
-                        <div hidden="hidden" data-form-alert="" class="alert alert-success col-12">Thanks for filling out the form!</div>
-                        <div hidden="hidden" data-form-alert-danger="" class="alert alert-danger col-12">
-                            Oops...! some problem!
-                        </div>
+                        <% if (typeof data !== "undefined") { %>
+                            <% if (data.emailExisted) { %>
+                                <div data-form-alert-danger="" class="alert alert-danger col-12">
+                                    Email đã tồn tại!
+                                </div>
+                            <% } %>
+                        <% } %> 
+                        
                     </div>
                     <div class="dragArea row">
                         <div class="col-lg-12 col-md-12 col-sm-12 form-group mb-3" data-for="name">
