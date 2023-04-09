@@ -11,6 +11,10 @@ const passport = require("passport");
 const initializePassport = require("./passport");
 dotenv.config();
 
+const {
+    checkAuth
+} = require("./utils");
+
 // configuration process
 const app = express();
 const PORT = process.env.PORT || 5678;
@@ -21,7 +25,6 @@ app.use(session({
     store,
     cookie: {
         maxAge: 60*60*60*24,
-        secure: true,
     }
 }));
 app.use(bodyParser.urlencoded({extended:false}));
@@ -37,7 +40,13 @@ app.set('view engine', 'ejs');
 // routing logic
 
 app.get("/", (req, res, next) => {
-    res.render("index");
+    if (req.isAuthenticated()) {
+        res.render("index", {data: {isAuthenticated: true}});
+    } else {
+        // console.log(req.isAuthenticated())
+        // console.log(req.user);
+        res.render("index");
+    }
 });
 
 

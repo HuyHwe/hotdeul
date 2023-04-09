@@ -61,7 +61,11 @@
                     </a>
                     
                 </div>
+                <% if (typeof data === "undefined") { %>
                 <div class="navbar-buttons mbr-section-btn"><a class="btn btn-primary display-4" href="/account/login">Log-in</a></div>
+                <% } else if (data.isAuthenticated) { %>
+                    <div class="navbar-buttons mbr-section-btn"><a class="btn btn-primary-outline display-4" href="/products/cart">Giỏ hàng</a></div>
+                <% } %>
             </div>
         </div>
     </nav>

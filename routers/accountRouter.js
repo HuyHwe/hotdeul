@@ -5,9 +5,10 @@ const bcrypt = require("bcrypt");
 const passport = require("passport");
 const initializePassport = require("../passport");
 initializePassport(passport);
+const {checkAuth} = require("../utils");
 
-accountRounter.get("/", (req,res, next) => {
-    
+accountRounter.get("/", checkAuth, (req,res, next) => {
+    res.render("account", {data: {name: req.user.name}});
 })
 
 accountRounter.get("/signup", (req, res, next) => {
