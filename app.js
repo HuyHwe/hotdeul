@@ -34,6 +34,7 @@ initializePassport(passport);
 //load static file
 app.use("/assets", express.static(__dirname + '/assets'));
 accountRounter.use("/assets", express.static(__dirname + '/assets'));
+productsRouter.use("/assets", express.static(__dirname + '/assets'));
 
 
 app.set('view engine', 'ejs');

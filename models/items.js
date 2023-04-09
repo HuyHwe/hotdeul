@@ -17,13 +17,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   items.init({
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
     size: DataTypes.STRING,
-    quantity: DataTypes.INTEGER,
-    products_id: DataTypes.INTEGER
+    products_id: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'items',
