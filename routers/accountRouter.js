@@ -1,5 +1,7 @@
 const express = require('express');
-const {users} = require('../models');
+const {
+    users,
+} = require('../models');
 const accountRounter =  express.Router();
 const bcrypt = require("bcrypt");
 const passport = require("passport");
@@ -49,5 +51,8 @@ accountRounter.get("/loginn", (req,res, next) => {
 accountRounter.post("/login", passport.authenticate("local", {successRedirect: "/", failureRedirect:"/account/loginn"}), (req, res, next) => {
     
 })
+
+
+
 
 module.exports = accountRounter;
