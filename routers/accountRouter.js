@@ -10,7 +10,50 @@ initializePassport(passport);
 const {checkAuth} = require("../utils");
 
 accountRounter.get("/", checkAuth, (req,res, next) => {
-    res.render("account", {data: {name: req.user.name}});
+    res.render("account", {data: {
+        name: req.user.name,
+        email: req.user.email,
+        password: req.user.password,
+        address: req.user.address,
+        phone: req.user.phone
+    }});
+})
+
+accountRounter.post("/", async (req, res, next) => {
+    if (req.body.password != null) {
+        const notChange = await bcrypt.compare(req.body.password, req.user.password);
+        if (!notChange) {
+            req.body.password = await bcrypt.hash(req.body.password, 10);
+        } else {
+            req.body.password = req.user.password;
+        }
+    } else {
+        req.body.password = req.user.password;
+    }
+    try {
+        await users.update({
+            name: req.body.name,
+            phone: req.body.phone,
+            address: req.body.address,
+            password: req.body.password,
+        }, {where: {id:req.user.id}});
+    } catch(e) {
+        if (e) {
+            console.log(e);
+            return res.render("account", {data: {success: false, name: req.body.name,
+                phone: req.body.phone,
+                address: req.body.address,
+                }});
+        }
+    }
+
+    res.render("account", {data: {success: true,
+        name: req.user.name,
+        email: req.user.email,
+        password: req.user.password,
+        address: req.user.address,
+        phone: req.user.phone}});
+    
 })
 
 accountRounter.get("/signup", (req, res, next) => {
@@ -18,7 +61,7 @@ accountRounter.get("/signup", (req, res, next) => {
 })
 
 accountRounter.post("/signup",async (req, res, next) => {
-    const email = req.body.email[1];
+    const email = req.body.email;
     const name = req.body.name;
     const phone = req.body.phone;
     let findUser;
@@ -51,6 +94,7 @@ accountRounter.get("/loginn", (req,res, next) => {
 accountRounter.post("/login", passport.authenticate("local", {successRedirect: "/", failureRedirect:"/account/loginn"}), (req, res, next) => {
     
 })
+
 
 
 
