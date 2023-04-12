@@ -21,7 +21,7 @@ accountRounter.get("/", checkAuth, (req,res, next) => {
 
 accountRounter.post("/", async (req, res, next) => {
     if (req.body.password != null) {
-        const notChange = await bcrypt.compare(req.body.password, req.user.password);
+        const notChange = await bcrypt.compare(req.body.passwordcomm, req.user.password);
         if (!notChange) {
             req.body.password = await bcrypt.hash(req.body.password, 10);
         } else {
