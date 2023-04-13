@@ -26,6 +26,7 @@ productsRouter.get("/",async (req,res, next) => {
             name: product.name,
             description: product.description,
             price: product.price,
+            id: product.id,
         })
     }
 
@@ -64,6 +65,52 @@ productsRouter.get("/cart",checkAuth, async (req, res, next) => {
     }
     console.log(itemList);
     res.render("cart", {data: {itemList}});
+})
+
+productsRouter.get("/item",async (req, res, next) => {
+    try{
+        const product = await products.findOne({where: {id: req.query.id}});
+        let info, size = {
+            S: 0,
+            M: 0,
+            L: 0,
+            XL: 0,
+            XXL: 0,
+        }
+        if (product) {
+            info = {
+                name: product.name,
+                description: product.description,
+                price: product.price,
+                id: product.id,
+            }
+        }
+        const itemsList = await items.findAll({where: {products_id: req.query.id}});
+        if (itemsList) {
+            for (let item of itemsList) {
+                switch(item.size) {
+                    case 'S': size.S++; break;
+                    case 'M': size.M++; break;
+                    case 'L': size.L++; break;
+                    case 'XL': size.XL++; break;
+                    case 'XXL': size.XXL++; break;
+                }
+            }
+        } else {
+            itemList = null;
+        }
+        res.render("item", {data: {
+            info: info,
+            size: size,
+        }})
+    
+    } catch(e) {
+        if (e) {
+            console.log(e);
+            return res.send("not ok")
+        }
+    }
+
 })
 
 module.exports = productsRouter;
