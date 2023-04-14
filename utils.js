@@ -1,3 +1,5 @@
+const {users} = require("./models");
+
 function checkAuth(req, res, next) {
     if (req.isAuthenticated()) {
         return next()
@@ -5,5 +7,22 @@ function checkAuth(req, res, next) {
     res.redirect("/account/login");
 }
 
+async function checkAuthAdmin(req, res, next) {
+    if (req.isAuthenticated()) {
+        const adminList = await users.findAll({where: {admin: 1}})
+        for (admin of adminList) {
+            if (req.user.id === admin.id) {
+                return next();
+            }
+        }
+        res.render("404");
+    } else {
+        res.render("404");
+    }
+}
 
-module.exports = {checkAuth};
+
+module.exports = {
+    checkAuth,
+    checkAuthAdmin,
+};

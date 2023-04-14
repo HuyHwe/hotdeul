@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const bodyParser = require("body-parser");
 const accountRounter = require("./routers/accountRouter");
 const productsRouter = require("./routers/productsRouter");
+const adminRouter = require("./routers/adminRouter");
 const sequelize = require("./models").sequelize;
 const session = require("express-session");
 const store = new session.MemoryStore();
@@ -55,6 +56,14 @@ app.get("/", (req, res, next) => {
 app.use("/products", productsRouter);
 
 app.use("/account", accountRounter);
+
+app.use("/admin", adminRouter);
+
+app.use(function(req, res, next) {
+    res.status(404);
+    res.render('404');
+    return;
+  });
 
 sequelize.authenticate().then(() => {
     app.listen(PORT, () => {
