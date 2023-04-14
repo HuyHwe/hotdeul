@@ -93,15 +93,26 @@
 
                             <div class="mbr-section-btn mb-4">
                                 <form method="post" action="/products/item" >
-                                    <input type="hidden" value="<%= data.info.id %>">
-                                    <input type="number" class="form-control" value="1" min="0">
-                                    <select type="size" class="form-control">
+                                    <input type="hidden" value="<%= data.info.id %>" name="id" id="id">
+                                    <input type="number" class="form-control" value="1" min="0" name="quantity" id="quantity">
+                                    <select type="size" class="form-control" name="size" id="size">
                                         <option value="S">S</option>
                                         <option value="M">M</option>
                                         <option value="L">L</option>
                                         <option value="XL">XL</option>
                                         <option value="XXL">XXL</option>
                                     </select>
+                                    <br>
+                                    <br>
+                                    <% if (typeof data !== "undefined") { %>
+                                        <% if (data.success == 0) { %>
+                                            <div data-form-alert-danger="" class="alert alert-danger col-12">
+                                                Không còn đủ <%= data.quantity %> sản phẩm size <%= data.size %>
+                                            </div>
+                                        <% } else if (data.success == 1) { %>
+                                            <div data-form-alert="" class="alert alert-success col-12">Sản phẩm đã được cho vào giỏ!</div>
+                                            <% } %>
+                                    <% } %>
                                     <input class="btn btn-primary display-4" type="submit" value="Thêm vào giỏ hàng">Thêm vào giỏ hàng</a>
                                 </form>
                                 

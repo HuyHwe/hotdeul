@@ -102,6 +102,9 @@ productsRouter.get("/item",async (req, res, next) => {
         res.render("item", {data: {
             info: info,
             size: size,
+            quantity: req.query.quantity || null,
+            success: req.query.success || null,
+            size: req.query.size || null,
         }})
     
     } catch(e) {
@@ -109,6 +112,30 @@ productsRouter.get("/item",async (req, res, next) => {
             console.log(e);
             return res.send("not ok")
         }
+    }
+
+})
+
+productsRouter.post("/item", checkAuth, async (req, res, next) => {
+
+    const id = req.body.id;
+    const quantity = req.body.quantity;
+    const size = req.body.size;
+    const itemsFound = await items.findAll({where: {
+        products_id: id,
+        size: size,
+    }})
+
+    if (itemsFound.length >= quantity) {
+        for (let i = 0; i<= quantity-1; i++) {
+            await items_users.create({
+                items_id: itemsFound[i].id,
+                users_id: req.user.id,
+            })
+        }
+        res.redirect(`/products/item?id=${id}&success=1`);
+    } else {
+        res.redirect(`/products/item?id=${id}&success=0&quantity=${itemsFound.length}&size=${size}`);
     }
 
 })
