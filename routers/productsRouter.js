@@ -3,7 +3,8 @@ const { Op } = require("sequelize");
 const {
     items_users,
     items,
-    products
+    products,
+    orders
 } = require("../models");
 
 const {
@@ -41,6 +42,7 @@ productsRouter.get("/",async (req,res, next) => {
 
 
 productsRouter.get("/cart",checkAuth, async (req, res, next) => {
+    let totalPrice = 0;
     let itemList = [];
     let cart = await items_users.findAll({where: {users_id: req.user.id}});
     cart = cart.map(item => item.items_id);
@@ -53,6 +55,7 @@ productsRouter.get("/cart",checkAuth, async (req, res, next) => {
 
         await products.findOne({where: {id: productId}}).then(res => {
             price = res.price;
+            totalPrice += price;
             description = res.description;
             name = res.name;
         });
@@ -62,10 +65,24 @@ productsRouter.get("/cart",checkAuth, async (req, res, next) => {
             description,
             size,
             price,
+            id
         });
     }
-    console.log(itemList);
-    res.render("cart", {data: {itemList, isAuthenticated: true}});
+    res.render("cart", {data: {itemList, isAuthenticated: true, totalPrice}});
+})
+
+productsRouter.post("/cart",checkAuth, async (req, res, next) => {
+    if (req.body.itemDelete) {
+        await items_users.destroy({where: {items_id: req.body.itemDelete}});
+        res.redirect("/products/cart");
+    } else if (req.body.order) {
+        const itemsList = await items_users.findAll({where: {users_id: req.user.id}});
+        for (let item of itemsList) {
+            await orders.create({users_id: req.user.id, items_id: item.items_id});
+        }
+        await items_users.destroy({where: {users_id: req.user.id}});
+        res.send("oke");
+    }
 })
 
 productsRouter.get("/item",async (req, res, next) => {
