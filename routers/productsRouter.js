@@ -71,15 +71,22 @@ productsRouter.get("/cart",checkAuth, async (req, res, next) => {
     res.render("cart", {data: {itemList, isAuthenticated: true, totalPrice}});
 })
 
-productsRouter.post("/cart",checkAuth, async (req, res, next) => {
+productsRouter.post("/cart", async (req, res, next) => {
     if (req.body.itemDelete) {
         await items_users.destroy({where: {items_id: req.body.itemDelete}});
         res.redirect("/products/cart");
     } else if (req.body.order) {
-        const itemsList = await items_users.findAll({where: {users_id: req.user.id}});
-        for (let item of itemsList) {
-            await orders.create({users_id: req.user.id, items_id: item.items_id});
-        }
+        itemsListId = [];
+        await items_users.findAll({where: {users_id: req.user.id}}).then(itemsList => {
+            
+            console.log(itemsList);
+            for (item of itemsList) {
+                itemsListId.push(item.items_id);
+            }
+            
+        });
+        
+        await orders.create({users_id: req.user.id, items_id: itemsListId});
         await items_users.destroy({where: {users_id: req.user.id}});
         res.send("oke");
     }
