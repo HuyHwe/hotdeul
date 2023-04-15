@@ -60,11 +60,13 @@
                     </a>
                     
                 </div>
-                <% if (typeof data === "undefined") { %>
+                <% if (typeof data !== "undefined") { %>
+                    <% if (data.isAuthenticated == true) { %>
+                        <div class="navbar-buttons mbr-section-btn"><a class="btn btn-primary-outline display-4" href="/products/cart">Giỏ hàng</a></div>
+                        <div class="navbar-buttons mbr-section-btn"><a class="btn btn-primary-outline display-4" href="/account/logout">Log out</a></div>
+                    <% } else { %>
                 <div class="navbar-buttons mbr-section-btn"><a class="btn btn-primary display-4" href="/account/login">Log-in</a></div>
-                <% } else if (data.isAuthenticated) { %>
-                    <div class="navbar-buttons mbr-section-btn"><a class="btn btn-primary-outline display-4" href="/products/cart">Giỏ hàng</a></div>
-                <% } %>
+                <% }} %>
             </div>
         </div>
     </nav>
@@ -107,7 +109,7 @@
                             <input type="password" name="password" placeholder="Mật khẩu" data-form-field="password"  class="form-control" value="" id="phone-form6-5">
                         </div>
                         <div data-for="address" class="col-lg-12 col-md-12 col-sm-12 form-group mb-3">
-                            <input type="text" name="address" placeholder="Địa chỉ" data-form-field="address" class="form-control" value="<% data.address %>" id="phone-form6-5">
+                            <input type="text" name="address" placeholder="Địa chỉ" data-form-field="address" class="form-control" value="<%= data.address %>" id="phone-form6-5">
                         </div>
                         <div class="col-auto mbr-section-btn align-center">
                             <button type="submit" class="btn btn-primary display-4">Chỉnh sửa</button>

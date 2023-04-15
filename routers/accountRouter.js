@@ -11,6 +11,7 @@ const {checkAuth} = require("../utils");
 
 accountRounter.get("/", checkAuth, (req,res, next) => {
     res.render("account", {data: {
+        isAuthenticated: true,
         name: req.user.name,
         email: req.user.email,
         password: req.user.password,
@@ -21,7 +22,7 @@ accountRounter.get("/", checkAuth, (req,res, next) => {
 
 accountRounter.post("/", async (req, res, next) => {
     if (req.body.password != null) {
-        const notChange = await bcrypt.compare(req.body.passwordcomm, req.user.password);
+        const notChange = await bcrypt.compare(req.body.password, req.user.password);
         if (!notChange) {
             req.body.password = await bcrypt.hash(req.body.password, 10);
         } else {
@@ -93,6 +94,16 @@ accountRounter.get("/loginn", (req,res, next) => {
 
 accountRounter.post("/login", passport.authenticate("local", {successRedirect: "/", failureRedirect:"/account/loginn"}), (req, res, next) => {
     
+})
+
+accountRounter.get("/logout", (req, res, next) => {
+    req.logout((e) => {
+        if (e) {
+            console.log(e);
+            return res.redirect("/404");
+        }
+    });
+    res.redirect("/");
 })
 
 

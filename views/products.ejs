@@ -60,12 +60,13 @@
                     </a>
                     
                 </div>
-                <% if (typeof data === "undefined") { %>
+                <% if (typeof data !== "undefined") { %>
+                    <% if (data.isAuthenticated == true) { %>
+                        <div class="navbar-buttons mbr-section-btn"><a class="btn btn-primary-outline display-4" href="/products/cart">Giỏ hàng</a></div>
+                        <div class="navbar-buttons mbr-section-btn"><a class="btn btn-primary-outline display-4" href="\account">Tài khoản</a></div>
+                    <% } else { %>
                 <div class="navbar-buttons mbr-section-btn"><a class="btn btn-primary display-4" href="/account/login">Log-in</a></div>
-                <% } else if (data.isAuthenticated) { %>
-                    <div class="navbar-buttons mbr-section-btn"><a class="btn btn-primary-outline display-4" href="/products/cart">Giỏ hàng</a></div>
-                    <div class="navbar-buttons mbr-section-btn"><a class="btn btn-primary-outline display-4" href="\account">Tài khoản</a></div>
-                <% } %>
+                <% }} %>
             </div>
         </div>
     </nav>

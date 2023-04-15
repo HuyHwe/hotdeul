@@ -47,7 +47,7 @@ app.get("/", (req, res, next) => {
     } else {
         // console.log(req.isAuthenticated())
         // console.log(req.user);
-        res.render("index");
+        res.render("index", {data: {isAuthenticated: false}});
     }
 });
 

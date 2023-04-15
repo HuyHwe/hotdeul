@@ -34,7 +34,8 @@ productsRouter.get("/",async (req,res, next) => {
         res.render("products", {data: {isAuthenticated: true,
                                         productsList,}});
     } else {
-        res.render("products", {data: {productsList}});
+        res.render("products", {data: {isAuthenticated: false,
+            productsList,}});
     }
 });
 
@@ -64,7 +65,7 @@ productsRouter.get("/cart",checkAuth, async (req, res, next) => {
         });
     }
     console.log(itemList);
-    res.render("cart", {data: {itemList}});
+    res.render("cart", {data: {itemList, isAuthenticated: true}});
 })
 
 productsRouter.get("/item",async (req, res, next) => {
