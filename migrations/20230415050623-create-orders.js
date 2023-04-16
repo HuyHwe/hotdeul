@@ -16,6 +16,20 @@ module.exports = {
       items_id: {
         type: Sequelize.ARRAY(Sequelize.UUID)
       },
+      products_id: {
+        type: Sequelize.ARRAY(Sequelize.INTEGER)
+      },
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      address: {
+        type: Sequelize.STRING
+      },
+      phone: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

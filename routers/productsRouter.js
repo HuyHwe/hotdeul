@@ -9,6 +9,7 @@ const {
 
 const {
     checkAuth,
+    checkAuthPost
 } = require("../utils");
 
 const productsRouter =  express.Router();
@@ -45,50 +46,82 @@ productsRouter.get("/cart",checkAuth, async (req, res, next) => {
     let totalPrice = 0;
     let itemList = [];
     let cart = await items_users.findAll({where: {users_id: req.user.id}});
-    cart = cart.map(item => item.items_id);
-    for (id of cart) {
-        let size, productId, price, description, name;
-        await items.findOne({where: {id: id}}).then(res => {
-            size = res.size;
-            productId = res.products_id;
-        });
+    for (product of cart) {
+        let price, description, name;
+        item = await items.findOne({where: {products_id: product.products_id, size: product.items_size}});
+        if (item != null) {
+            await products.findOne({where: {id: item.products_id}}).then(res => {
+                price = res.price;
+                totalPrice += price;
+                description = res.description;
+                name = res.name;
+            });
 
-        await products.findOne({where: {id: productId}}).then(res => {
-            price = res.price;
-            totalPrice += price;
-            description = res.description;
-            name = res.name;
-        });
-
-        itemList.push({
-            name,
-            description,
-            size,
-            price,
-            id
-        });
+            itemList.push({
+                name,
+                description,
+                items_size: product.items_size,
+                price,
+                products_id: product.products_id,
+            });
+        }
     }
+    console.log(itemList);
     res.render("cart", {data: {itemList, isAuthenticated: true, totalPrice}});
 })
 
 productsRouter.post("/cart", async (req, res, next) => {
-    if (req.body.itemDelete) {
-        await items_users.destroy({where: {items_id: req.body.itemDelete}});
+    if (!req.user) {
+        return res.redirect("/account/login");
+    };
+
+    if (req.body.productDelete) {
+        await items_users.destroy({where: {products_id: req.body.productDelete, items_size: req.body.sizeDelete}});
         res.redirect("/products/cart");
     } else if (req.body.order) {
-        itemsListId = [];
-        await items_users.findAll({where: {users_id: req.user.id}}).then(itemsList => {
-            
-            console.log(itemsList);
-            for (item of itemsList) {
-                itemsListId.push(item.items_id);
-            }
-            
-        });
         
-        await orders.create({users_id: req.user.id, items_id: itemsListId});
+        if (req.user.address == null) {
+            return res.redirect("/account?missing=address");
+        }
+        if (req.user.phone == null) {
+            return res.redirect("/account?missing=phone");
+        }
+        const phone = req.user.phone;
+
+        itemsListId = [];
+        productsListId = [];
+        try {
+        await items_users.findAll({where: {users_id: req.user.id}}).then(async (productsList) => {
+            if (productsList == null || productsList.length == 0) {
+                return res.redirect("/products/cart")
+            }
+            console.log(productsList);
+            for (product of productsList) {
+                await items.findOne({where: {products_id: product.products_id, size: product.items_size}})
+                .then(item => {
+                    itemsListId.push(item.id);
+                })
+                await items.destroy({where: {id: item.id}});
+                productsListId.push(product.products_id);
+                
+            }
+        });
+        await orders.create({
+            users_id: req.user.id,
+            items_id: itemsListId,
+            products_id : productsListId,
+            name: req.user.name,
+            address: req.user.address,
+            phone,
+        });
         await items_users.destroy({where: {users_id: req.user.id}});
-        res.send("oke");
+        res.redirect("/account/orders?ordered=1");
+        } catch (e) {
+            if (e) {
+                console.log(e);
+                
+            }
+        }
     }
 })
 
@@ -154,7 +187,7 @@ productsRouter.post("/item", checkAuth, async (req, res, next) => {
     if (itemsFound.length >= quantity) {
         for (let i = 0; i<= quantity-1; i++) {
             await items_users.create({
-                items_id: itemsFound[i].id,
+                products_id: id,
                 users_id: req.user.id,
             })
         }

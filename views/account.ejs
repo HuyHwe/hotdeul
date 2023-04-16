@@ -77,6 +77,12 @@
     <div class="mbr-overlay"></div>
     <div class="container">
         <div class="mbr-section-head">
+            <% if (typeof data !== "undefined") { if (data.missing != null) { %>
+                <div data-form-alert-danger="" class="alert alert-danger col-12">
+                    <%= data.missing == "phone" ? "Vui lòng bổ sung số điện thoại trước khi đặt hàng" : "Vui lòng bổ sung địa chỉ trước khi đặt hàng" %>
+                </div>
+            <% }} %>
+            
             <h3 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2"><strong>Thông tin cá nhân</strong></h3>
             
         </div>

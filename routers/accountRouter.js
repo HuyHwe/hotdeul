@@ -1,6 +1,7 @@
 const express = require('express');
 const {
     users,
+    orders,
 } = require('../models');
 const accountRounter =  express.Router();
 const bcrypt = require("bcrypt");
@@ -10,8 +11,10 @@ initializePassport(passport);
 const {checkAuth} = require("../utils");
 
 accountRounter.get("/", checkAuth, (req,res, next) => {
+    let missing = req.query.missing || null;
     res.render("account", {data: {
         isAuthenticated: true,
+        missing,
         name: req.user.name,
         email: req.user.email,
         password: req.user.password,
@@ -104,6 +107,14 @@ accountRounter.get("/logout", (req, res, next) => {
         }
     });
     res.redirect("/");
+})
+
+accountRounter.get("/orders", checkAuth,async (req, res, next) => {
+    const productsIdList = await orders.findAll({where: {users_id: req.user.id}});
+    console.log(typeof productsIdList.products_id);
+    if (req.query.ordered == 1) {
+        
+    }
 })
 
 

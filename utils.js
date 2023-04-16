@@ -7,6 +7,13 @@ function checkAuth(req, res, next) {
     res.redirect("/account/login");
 }
 
+function checkAuthPost(req) {
+    if (req.isAuthenticated()) {
+        return true;
+    }
+    return false;
+}
+
 async function checkAuthAdmin(req, res, next) {
     if (req.isAuthenticated()) {
         const adminList = await users.findAll({where: {admin: 1}})
@@ -25,4 +32,5 @@ async function checkAuthAdmin(req, res, next) {
 module.exports = {
     checkAuth,
     checkAuthAdmin,
+    checkAuthPost
 };

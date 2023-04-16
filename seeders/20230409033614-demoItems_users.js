@@ -6,13 +6,15 @@ module.exports = {
   async up (queryInterface, Sequelize) {
    await queryInterface.bulkInsert('items_users', [{
      users_id: (await users.findOne({where: {email: "huyhwe1@fakemail.com"}})).id,
-     items_id: (await items.findOne({where: {size: "M"}})).id,
+     products_id: 1,
+     items_size: "M",
      createdAt: new Date(),
      updatedAt: new Date(),
    },
    {
     users_id: (await users.findOne({where: {email: "huyhwe1@fakemail.com"}})).id,
-    items_id: (await items.findOne({where: {size: "L"}})).id,
+    products_id: 1,
+    items_size: "L",
     createdAt: new Date(),
     updatedAt: new Date(),
   },

@@ -103,7 +103,8 @@
                                                 <p class="cost mbr-fonts-style display-5">
                                                     <%= item.price %>k</p>
                                                     <form method="post" action="/products/cart">
-                                                        <input type="hidden" name="itemDelete" id="itemDelete" value="<%= item.id %>">
+                                                        <input type="hidden" name="productDelete" id="productDelete" value="<%= item.products_id %>">
+                                                        <input type="hidden" name="sizeDelete" id="sizeDelete" value="<%= item.items_size %>">
                                                         <input type="submit" value="Xóa" class="btn btn-primary display-4"> 
                                                     </form>
                                             </div>
@@ -112,7 +113,7 @@
                                         <div class="col-12">
                                             <div class="bottom-line">
                                                 <p class="mbr-text mbr-fonts-style m-0 display-7">
-                                                    <%= item.size %>
+                                                    <%= item.items_size %>
                                                 </p>
                                                 <p class="mbr-text mbr-fonts-style m-0 display-7">
                                                     <%= item.description %>

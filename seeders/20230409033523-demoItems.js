@@ -13,6 +13,78 @@ module.exports = {
     },
     {
       id: uuidv4(),
+      size: "M",
+      products_id: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+ 
+     },
+     {
+      id: uuidv4(),
+      size: "M",
+      products_id: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+ 
+     },
+     {
+      id: uuidv4(),
+      size: "M",
+      products_id: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+ 
+     },
+     {
+      id: uuidv4(),
+      size: "M",
+      products_id: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+ 
+     },
+     {
+      id: uuidv4(),
+      size: "M",
+      products_id: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+ 
+     },
+     {
+      id: uuidv4(),
+      size: "M",
+      products_id: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+ 
+     },
+     {
+      id: uuidv4(),
+      size: "M",
+      products_id: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+ 
+     },
+     {
+      id: uuidv4(),
+      size: "M",
+      products_id: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+ 
+     },
+     {
+      id: uuidv4(),
+      size: "M",
+      products_id: 1,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+ 
+     },
+    {
+      id: uuidv4(),
       size: "L",
       products_id: 1,
       createdAt: new Date(),

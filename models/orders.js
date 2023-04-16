@@ -22,6 +22,18 @@ module.exports = (sequelize, DataTypes) => {
     users_id: DataTypes.UUID,
     items_id: {
       type: DataTypes.ARRAY(DataTypes.UUID)
+    },
+    products_id: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER)
+    },
+    name: {
+      type: DataTypes.STRING
+    },
+    address: {
+      type: DataTypes.STRING
+    },
+    phone: {
+      type: DataTypes.STRING,
     }
   }, {
     sequelize,
