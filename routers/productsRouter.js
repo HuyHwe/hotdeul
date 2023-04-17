@@ -44,7 +44,7 @@ productsRouter.get("/",async (req,res, next) => {
 
 productsRouter.get("/cart",checkAuth, async (req, res, next) => {
     let totalPrice = 0;
-    let itemList = [];
+    let itemsList = [];
     let cart = await items_users.findAll({where: {users_id: req.user.id}});
     for (product of cart) {
         let price, description, name;
@@ -57,7 +57,7 @@ productsRouter.get("/cart",checkAuth, async (req, res, next) => {
                 name = res.name;
             });
 
-            itemList.push({
+            itemsList.push({
                 name,
                 description,
                 items_size: product.items_size,
@@ -66,8 +66,8 @@ productsRouter.get("/cart",checkAuth, async (req, res, next) => {
             });
         }
     }
-    console.log(itemList);
-    res.render("cart", {data: {itemList, isAuthenticated: true, totalPrice}});
+
+    res.render("cart", {data: {itemsList, isAuthenticated: true, totalPrice}});
 })
 
 productsRouter.post("/cart", async (req, res, next) => {
@@ -76,7 +76,8 @@ productsRouter.post("/cart", async (req, res, next) => {
     };
 
     if (req.body.productDelete) {
-        await items_users.destroy({where: {products_id: req.body.productDelete, items_size: req.body.sizeDelete}});
+        const itemsList = await items_users.findAll({where: {products_id: req.body.productDelete, items_size: req.body.sizeDelete}});
+        await items_users.destroy({where: {id: itemsList[0].id}});
         res.redirect("/products/cart");
     } else if (req.body.order) {
         
@@ -90,32 +91,36 @@ productsRouter.post("/cart", async (req, res, next) => {
 
         itemsListId = [];
         productsListId = [];
+        itemsSizeId = [];
         try {
-        await items_users.findAll({where: {users_id: req.user.id}}).then(async (productsList) => {
-            if (productsList == null || productsList.length == 0) {
-                return res.redirect("/products/cart")
-            }
-            console.log(productsList);
-            for (product of productsList) {
-                await items.findOne({where: {products_id: product.products_id, size: product.items_size}})
-                .then(item => {
-                    itemsListId.push(item.id);
-                })
-                await items.destroy({where: {id: item.id}});
+        const productsList = await items_users.findAll({where: {users_id: req.user.id}});
+        if (productsList == null || productsList.length == 0) {
+            return res.redirect("/products/cart")
+        }
+
+        for (product of productsList) {
+
+            await items.findOne({where: {
+                products_id: product.products_id, 
+                size: product.items_size}})
+                .then (res => {
+                itemsListId.push(res.id);
                 productsListId.push(product.products_id);
-                
-            }
-        });
+                itemsSizeId.push(product.items_size);
+            })
+        }
+        await items.destroy({where: {id: item.id}});
         await orders.create({
             users_id: req.user.id,
             items_id: itemsListId,
             products_id : productsListId,
+            items_size: itemsSizeId,
             name: req.user.name,
             address: req.user.address,
             phone,
         });
         await items_users.destroy({where: {users_id: req.user.id}});
-        res.redirect("/account/orders?ordered=1");
+        res.redirect("/account/orders?ordered=true");
         } catch (e) {
             if (e) {
                 console.log(e);
@@ -155,9 +160,10 @@ productsRouter.get("/item",async (req, res, next) => {
                 }
             }
         } else {
-            itemList = null;
+            itemsList = null;
         }
         res.render("item", {data: {
+            isAuthenticated: req.user != null ? true : false,
             info: info,
             size: size,
             quantity: req.query.quantity || null,
@@ -188,6 +194,7 @@ productsRouter.post("/item", checkAuth, async (req, res, next) => {
         for (let i = 0; i<= quantity-1; i++) {
             await items_users.create({
                 products_id: id,
+                items_size: size,
                 users_id: req.user.id,
             })
         }

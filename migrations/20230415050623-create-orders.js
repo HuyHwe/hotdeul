@@ -19,6 +19,9 @@ module.exports = {
       products_id: {
         type: Sequelize.ARRAY(Sequelize.INTEGER)
       },
+      items_size: {
+        type: Sequelize.ARRAY(Sequelize.STRING)
+      },
       name: {
         type: Sequelize.STRING,
         allowNull: false

@@ -2,6 +2,7 @@ const express = require('express');
 const {
     users,
     orders,
+    products,
 } = require('../models');
 const accountRounter =  express.Router();
 const bcrypt = require("bcrypt");
@@ -12,7 +13,14 @@ const {checkAuth} = require("../utils");
 
 accountRounter.get("/", checkAuth, (req,res, next) => {
     let missing = req.query.missing || null;
+    let success = null;
+    if (req.query.success === 'true') {
+        success = true;
+    } else if (req.query.success == 'false') {
+        success = false;
+    } 
     res.render("account", {data: {
+        success,
         isAuthenticated: true,
         missing,
         name: req.user.name,
@@ -44,20 +52,11 @@ accountRounter.post("/", async (req, res, next) => {
     } catch(e) {
         if (e) {
             console.log(e);
-            return res.render("account", {data: {success: false, name: req.body.name,
-                phone: req.body.phone,
-                address: req.body.address,
-                }});
+            return res.redirect("/account?success=false");
         }
     }
 
-    res.render("account", {data: {success: true,
-        name: req.user.name,
-        email: req.user.email,
-        password: req.user.password,
-        address: req.user.address,
-        phone: req.user.phone}});
-    
+    res.redirect("/account?success=true");
 })
 
 accountRounter.get("/signup", (req, res, next) => {
@@ -110,10 +109,38 @@ accountRounter.get("/logout", (req, res, next) => {
 })
 
 accountRounter.get("/orders", checkAuth,async (req, res, next) => {
-    const productsIdList = await orders.findAll({where: {users_id: req.user.id}});
-    console.log(typeof productsIdList.products_id);
-    if (req.query.ordered == 1) {
-        
+    const ordersListRaw = await orders.findAll({where: {users_id: req.user.id}});
+    ordersList = []
+    
+    for (let order of ordersListRaw) {
+        let totalPrice = 0;
+        let productsInfoList = [];
+        for (let i = 0; i<order.products_id.length; i++) {
+            await products.findOne({where: {id: order.products_id[i]}}).then( res => {
+                let info = {
+                    name: res.name,
+                    description: res.description,
+                    price: res.price,
+                    size: order.items_size[i],
+                }
+                totalPrice+= res.price,
+                productsInfoList.push(info);
+            })
+        }
+        ordersList.unshift({productsInfoList, totalPrice, name: order.name, address: order.address, phone: order.phone});
+    }
+
+    if (req.query.ordered == 'true') {
+        res.render("orders", {data: {
+            ordered: true,
+            ordersList,
+            isAuthenticated: true,
+        }})
+    }else {
+        res.render("orders", {data: {
+            ordersList,
+            isAuthenticated: true,
+        }})
     }
 })
 

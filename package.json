@@ -13,6 +13,10 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "migrate": "sequelize db:migrate",
+    "undoMigrate": "sequelize db:migrate:undo:all",
+    "seed": "sequelize db:seed:all",
+    "undoSeed": "sequelize db:seed:undo:all"
   }
 }
