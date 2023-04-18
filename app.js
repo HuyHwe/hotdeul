@@ -16,6 +16,11 @@ const {
     checkAuth
 } = require("./utils");
 
+const {
+    upload,
+    getFileStream,
+} = require("./s3");
+
 // configuration process
 const app = express();
 const PORT = process.env.PORT || 5678;
@@ -59,11 +64,22 @@ app.use("/account", accountRounter);
 
 app.use("/admin", adminRouter);
 
+app.get("/img/:key", (req, res, next) => {
+    const key = req.params.key;
+    const readStream = getFileStream(key);
+
+    readStream.pipe(res);
+})
+
+
+
 app.use(function(req, res, next) {
     res.status(404);
     res.render('404');
     return;
   });
+
+
 
 sequelize.authenticate().then(() => {
     app.listen(PORT, () => {
