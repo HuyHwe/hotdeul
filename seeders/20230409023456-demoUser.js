@@ -10,6 +10,7 @@ module.exports = {
       name: "Demo Name 1",
       password: await bcrypt.hash("123123", 10),
       phone: "0987654321",
+      admin: 1,
       createdAt: new Date(),
       updatedAt: new Date(),
     },

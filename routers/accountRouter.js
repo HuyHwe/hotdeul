@@ -121,6 +121,7 @@ accountRounter.get("/orders", checkAuth,async (req, res, next) => {
                     name: res.name,
                     description: res.description,
                     price: res.price,
+                    images: res.images,
                     size: order.items_size[i],
                 }
                 totalPrice+= res.price,

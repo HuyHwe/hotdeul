@@ -3,110 +3,20 @@ const uuidv4 = require('uuid').v4;
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-   await queryInterface.bulkInsert('items', [{
-     id: uuidv4(),
-     size: "M",
-     products_id: 1,
-     createdAt: new Date(),
-     updatedAt: new Date(),
-
-    },
-    {
-      id: uuidv4(),
-      size: "M",
-      products_id: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
- 
-     },
-     {
-      id: uuidv4(),
-      size: "M",
-      products_id: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
- 
-     },
-     {
-      id: uuidv4(),
-      size: "M",
-      products_id: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
- 
-     },
-     {
-      id: uuidv4(),
-      size: "M",
-      products_id: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
- 
-     },
-     {
-      id: uuidv4(),
-      size: "M",
-      products_id: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
- 
-     },
-     {
-      id: uuidv4(),
-      size: "M",
-      products_id: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
- 
-     },
-     {
-      id: uuidv4(),
-      size: "M",
-      products_id: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
- 
-     },
-     {
-      id: uuidv4(),
-      size: "M",
-      products_id: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
- 
-     },
-     {
-      id: uuidv4(),
-      size: "M",
-      products_id: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
- 
-     },
-    {
-      id: uuidv4(),
-      size: "L",
-      products_id: 1,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      
-     },
-     {
-      id: uuidv4(),
-      size: "M",
-      products_id: 2,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      
-     },
-     {
-      id: uuidv4(),
-      size: "L",
-      products_id: 2,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      
-     }], {});
+    const itemList = [];
+      const sizeList = ["S", "M", "L", "XL", "XXL"];
+      for (let i= 1; i<=30; i++) {
+        for (let size of sizeList) {
+          itemList.push({
+            id: uuidv4(),
+            size: size,
+            products_id: i,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          })
+        }
+      }
+   await queryInterface.bulkInsert('items', itemList, {});
     
   },
 

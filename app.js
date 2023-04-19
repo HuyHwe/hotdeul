@@ -51,7 +51,13 @@ app.get("/", (req, res, next) => {
     res.render("index", { data: { isAuthenticated: false } });
   }
 });
+app.get("/stores", (req, res, next) => {
+  res.render("stores");
+})
 
+app.get("/about", (req, res, next) => {
+  res.redirect("https://www.facebook.com/iurubycuckiluon/");
+})
 app.use("/products", productsRouter);
 
 app.use("/account", accountRounter);

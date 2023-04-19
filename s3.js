@@ -13,7 +13,7 @@ const s3 = new S3({
   secretAccessKey,
 });
 
-function upload(file) {
+function uploadFile(file) {
   const fileStream = fs.createReadStream(file.path);
 
   const uploadParams = {
@@ -34,6 +34,7 @@ function getFileStream(key) {
 }
 
 module.exports = {
-  upload,
+  uploadFile,
   getFileStream,
+  s3,
 };

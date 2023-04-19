@@ -17,7 +17,7 @@ productsRouter.get("/", async (req, res, next) => {
             id: {
                 [Op.between]: [
                     firstProductId + (pageNum - 1) * 10,
-                    pageNum * 10 + firstProductId,
+                    pageNum * 10 ,
                 ],
             },
         },
@@ -37,11 +37,11 @@ productsRouter.get("/", async (req, res, next) => {
 
     if (req.isAuthenticated()) {
         res.render("products", {
-            data: { isAuthenticated: true, productsList },
+            data: { isAuthenticated: true, productsList, pageNum},
         });
     } else {
         res.render("products", {
-            data: { isAuthenticated: false, productsList },
+            data: { isAuthenticated: false, productsList, pageNum },
         });
     }
 });
@@ -53,7 +53,7 @@ productsRouter.get("/cart", checkAuth, async (req, res, next) => {
         where: { users_id: req.user.id },
     });
     for (product of cart) {
-        let price, description, name;
+        let price, description, name, images;
         item = await items.findOne({
             where: {
                 products_id: product.products_id,
@@ -68,6 +68,7 @@ productsRouter.get("/cart", checkAuth, async (req, res, next) => {
                     totalPrice += price;
                     description = res.description;
                     name = res.name;
+                    images = res.images
                 });
 
             itemsList.push({
@@ -76,6 +77,7 @@ productsRouter.get("/cart", checkAuth, async (req, res, next) => {
                 items_size: product.items_size,
                 price,
                 products_id: product.products_id,
+                images
             });
         }
     }
