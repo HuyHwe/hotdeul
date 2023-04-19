@@ -162,89 +162,38 @@
     
 
     
-
+    
     <div class="container">
-        <div class="card">
-            <div class="card-wrapper">
-                <div class="row align-items-center">
-                    <div class="col-12 col-md-4">
-                        <div class="image-wrapper">
-                            <img src="assets/images/5401e38a3d624ca6143c12aa2f3ed7a5.jpg" alt="Mobirise Website Builder">
-                        </div>
-                    </div>
-                    <div class="col-12 col-md">
-                        <div class="card-box">
-                            <div class="row">
-                                <div class="col-md">
-                                    <h6 class="card-title mbr-fonts-style display-2"><strong>Áo thun not today</strong></h6>
-                                    <p class="mbr-text mbr-fonts-style display-7">Áo được làm bằng chất liệu cotton mix siêu mát, phù hợp cho đi chơi, đi dã ngoại và cả công việc</p>
+        <% if (typeof data != "undefined") { %>
+            <% for (let item of data.bestSeller) { %>
+                <div class="card">
+                    <div class="card-wrapper">
+                        <div class="row align-items-center">
+                            <div class="col-12 col-md-4">
+                                <div class="image-wrapper">
+                                    <img src="/img/<%= item.images[0] %>" alt="Mobirise Website Builder">
                                 </div>
-                                <div class="col-md-auto">
-                                    <p class="price mbr-fonts-style display-2">139k</p>
-                                    <div class="mbr-section-btn"><a href="https://mobiri.se" class="btn btn-secondary display-4">Thêm vào giỏ</a></div>
+                            </div>
+                            <div class="col-12 col-md">
+                                <div class="card-box">
+                                    <div class="row">
+                                        <div class="col-md">
+                                            <h6 class="card-title mbr-fonts-style display-2"><strong><%= item.name %></strong></h6>
+                                            <p class="mbr-text mbr-fonts-style display-7"><%= item.description %></p>
+                                        </div>
+                                        <div class="col-md-auto">
+                                            <p class="price mbr-fonts-style display-2"><%= item.price %></p>
+                                            <div class="mbr-section-btn"><a href="/products/item?id=<%= item.id %>" class="btn btn-secondary display-4">Khám phá</a></div>
+                                        </div>
+                                        <div></div>
+                                    </div>
                                 </div>
-                                <div></div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <% }} %>
         </div>
-        <div class="card">
-            <div class="card-wrapper">
-                <div class="row align-items-center">
-                    <div class="col-12 col-md-4">
-                        <div class="image-wrapper">
-                            <img src="assets/images/ao-len-kieu-han-quoc-cuc-dep-2-jpg-1632381797.jpg" alt="Mobirise Website Builder">
-                        </div>
-                    </div>
-                    <div class="col-12 col-md">
-                        <div class="card-box">
-                            <div class="row">
-                                <div class="col-md">
-                                    <h6 class="card-title mbr-fonts-style display-2"><strong>Áo len nữ minimal</strong></h6>
-                                    <p class="mbr-text mbr-fonts-style display-7">Áo len nữ mang phong cách minimalist, phù hợp để mix với quần áo thường ngày</p>
-                                </div>
-                                <div class="col-md-auto">
-                                    <p class="price mbr-fonts-style display-2">219k</p>
-                                    <div class="mbr-section-btn"><a href="https://mobiri.se" class="btn btn-secondary display-4">
-                                            Thêm vào giỏ
-                                        </a></div>
-                                </div>
-                                <div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-wrapper">
-                <div class="row align-items-center">
-                    <div class="col-12 col-md-4">
-                        <div class="image-wrapper">
-                            <img src="assets/images/10468142555-1439912412.jpg" alt="Mobirise Website Builder">
-                        </div>
-                    </div>
-                    <div class="col-12 col-md">
-                        <div class="card-box">
-                            <div class="row">
-                                <div class="col-md">
-                                    <h6 class="card-title mbr-fonts-style display-2"><strong>Áo thun nam trắng</strong></h6>
-                                    <p class="mbr-text mbr-fonts-style display-7">Áo thun nam trắng siêu mát mẻ, chất vải cotton co dãn phù hợp với phong cách street<br></p>
-                                </div>
-                                <div class="col-md-auto">
-                                    <p class="price mbr-fonts-style display-2">149k</p>
-                                    <div class="mbr-section-btn"><a href="https://mobiri.se" class="btn btn-secondary display-4">Thêm vào giỏ</a></div>
-                                </div>
-                                <div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </section>
 
 <section data-bs-version="5.1" class="testimonials2 cid-sFAO03Bfrt" id="testimonials2-a">
@@ -324,7 +273,7 @@
                 </div>
             </div>
             <div class="map-wrapper col-12 col-md-6">
-                <div class="google-map"><iframe frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCZI5F_k6S1k46ujh0SNrapM89f7mJxd30&amp;q=350 5th Ave, New York, NY 10118" allowfullscreen=""></iframe></div>
+                <div class="google-map"><iframe frameborder="0" style="border:0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3725.292514351339!2d105.78282447258233!3d20.98090844669171!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135accdd8a1ad71%3A0xa2f9b16036648187!2zSOG7jWMgdmnhu4duIEPDtG5nIG5naOG7hyBCxrB1IGNow61uaCB2aeG7hW4gdGjDtG5n!5e0!3m2!1svi!2s!4v1681915307406!5m2!1svi!2s" allowfullscreen=""></iframe></div>
             </div>
         </div>
     </div>

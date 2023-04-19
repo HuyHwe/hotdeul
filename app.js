@@ -12,6 +12,8 @@ const passport = require("passport");
 const initializePassport = require("./passport");
 dotenv.config();
 
+const {products} = require("./models");
+const {Op} = require("sequelize");
 const { checkAuth } = require("./utils");
 
 const { upload, getFileStream } = require("./s3");
@@ -42,13 +44,14 @@ productsRouter.use("/assets", express.static(__dirname + "/assets"));
 app.set("view engine", "ejs");
 // routing logic
 
-app.get("/", (req, res, next) => {
+app.get("/",async (req, res, next) => {
+  const bestSeller = await products.findAll({where: {id: {
+    [Op.between]: [3,5]
+  }}})
   if (req.isAuthenticated()) {
-    res.render("index", { data: { isAuthenticated: true } });
+    res.render("index", { data: { isAuthenticated: true, bestSeller:bestSeller } });
   } else {
-    // console.log(req.isAuthenticated())
-    // console.log(req.user);
-    res.render("index", { data: { isAuthenticated: false } });
+    res.render("index", { data: { isAuthenticated: false, bestSeller:bestSeller} });
   }
 });
 app.get("/stores", (req, res, next) => {
