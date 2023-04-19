@@ -123,7 +123,13 @@
                 </div>
                 <div class="p-0 col-12 col-lg-6 md-pb">
                     <div class="image-wrapper">
-                        <img src="assets/images/3.jpg" alt="Mobirise Website Builder">
+                        <% if (typeof data != "undefined") { %>
+                            <% if (data.info.images) { %>
+                                <% for (image of data.info.images) { %>
+                                    <img src="/img/<%= image %>" alt="Product image">
+                                <% } %>
+                            <% } %>
+                        <% } %>
                     </div>
                 </div>
             </div>

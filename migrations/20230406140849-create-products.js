@@ -21,9 +21,8 @@ module.exports = {
       price: {
         type: Sequelize.INTEGER
       },
-      quantity_total: {
-        type: Sequelize.INTEGER,
-        defaultValue:0
+      images: {
+        type: Sequelize.ARRAY(Sequelize.STRING)
       },
       createdAt: {
         allowNull: false,

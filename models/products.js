@@ -1,6 +1,6 @@
 'use strict';
 const {
-  Model
+  Model, DATE
 } = require('sequelize');
 const items_users = require('./items_users');
 module.exports = (sequelize, DataTypes) => {
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     price: DataTypes.INTEGER,
-    quantity_total: DataTypes.INTEGER
+    images: DataTypes.ARRAY(DataTypes.STRING),
   }, {
     sequelize,
     modelName: 'products',

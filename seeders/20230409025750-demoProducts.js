@@ -8,7 +8,7 @@ module.exports = {
       name: 'Áo cardigan nữ trắng',
       description: 'chất liệu bọc dù siêu bền dài 3m',
       price: 139,
-      quantity_total: 2,
+      images: ["5401e38a3d624ca6143c12aa2f3ed7a5.jpg"],
       createdAt: new Date(),
       updatedAt: new Date()
     },
@@ -17,7 +17,7 @@ module.exports = {
       name: 'Áo len nữ trắng',
       description: 'chất liệu bọc dù siêu bền dài 3m',
       price: 159,
-      quantity_total: 2,
+      images: ["ao-len-kieu-han-quoc-cuc-dep-2-jpg-1632381797-23092021142317.jpg"],
       createdAt: new Date(),
       updatedAt: new Date()
     },
